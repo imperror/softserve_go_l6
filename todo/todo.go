@@ -9,7 +9,9 @@
 package todo
 
 import (
+	"encoding/json"
 	"fmt"
+	"os"
 	"time"
 )
 
@@ -29,8 +31,14 @@ type Todo struct {
 //   - Write the result to path (os.WriteFile is the simplest option).
 //   - Wrap any error with context using fmt.Errorf("...: %w", err).
 func SaveTodos(path string, todos []Todo) error {
-	// TODO: implement me
-	return fmt.Errorf("SaveTodos: not implemented")
+	data, err := json.MarshalIndent(todos, "", "  ")
+	if err != nil {
+		return fmt.Errorf("SaveTodos: encode %s: %w", path, err)
+	}
+	if err := os.WriteFile(path, data, 0644); err != nil {
+		return fmt.Errorf("SaveTodos: write %s: %w", path, err)
+	}
+	return nil
 }
 
 // LoadTodos reads and parses the todo list stored at path.
@@ -42,6 +50,14 @@ func SaveTodos(path string, todos []Todo) error {
 //     "malformed JSON" if they inspect the error (e.g. via errors.Is
 //     against os.ErrNotExist, or by checking for a *json.SyntaxError).
 func LoadTodos(path string) ([]Todo, error) {
-	// TODO: implement me
-	return nil, fmt.Errorf("LoadTodos: not implemented")
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil, fmt.Errorf("LoadTodos: read %s: %w", path, err)
+	}
+
+	var todos []Todo
+	if err := json.Unmarshal(data, &todos); err != nil {
+		return nil, fmt.Errorf("LoadTodos: parse %s: %w", path, err)
+	}
+	return todos, nil
 }

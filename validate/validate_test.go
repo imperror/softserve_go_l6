@@ -26,6 +26,21 @@ var emailCases = []struct {
 	{"empty string", "", false},
 
 	// TODO: add at least 5 more cases here.
+	{"whitespace inside", "stu dent@softserve.academy", false},
+	{"whitespace trailing", "student@softserve.academy ", false},
+	{"multiple at signs", "stu@dent@softserve.academy", false},
+	{"missing local part", "@softserve.academy", false},
+	{"missing domain part", "student@", false},
+	{"no dot in domain", "student@localhost", false},
+	{"trailing dot in domain", "student@softserve.academy.", false},
+	{"consecutive dots in local", "stud..ent@softserve.academy", false},
+	{"leading dot in local", ".student@softserve.academy", false},
+	{"plus subaddress", "student+hw@softserve.academy", true},
+	{"hyphenated domain label", "student@soft-serve.academy", true},
+	{"single letter tld", "student@softserve.a", false},
+	{"numeric tld", "student@softserve.123", false},
+	{"unicode local part", "юзер@softserve.academy", false},
+	{"uppercase ascii allowed", "Student@SoftServe.Academy", true},
 }
 
 func TestValidateEmail(t *testing.T) {
@@ -64,6 +79,19 @@ var phoneCases = []struct {
 	{"empty string", "", false},
 
 	// TODO: add at least 5 more cases here.
+	{"dashed national format", "050-123-4567", true},
+	{"spaces and parentheses", "(050) 123 4567", true},
+	{"dotted format", "380.50.123.4567", true},
+	{"too few digits", "12345", false},
+	{"too many digits", "+1234567890123456", false},
+	{"no digits at all", "---", false},
+	{"letters only", "abcdefghij", false},
+	{"plus sign not at start", "380+501234567", false},
+	{"double plus", "++380501234567", false},
+	{"underscore separator", "050_123_4567", false},
+	{"tab character", "\t", false},
+	{"non ascii digits", "050١23٤567", false},
+	{"local number without country code", "0501234567", true},
 }
 
 func TestValidatePhone(t *testing.T) {

@@ -19,25 +19,26 @@
 
 ## Function under test
 
-<!-- e.g. `func ValidateEmail(s string) bool` from validate/validate.go -->
+`func ValidateEmail(s string) bool` from validate/validate.go
 
 ## Prompt you gave the AI
 
-<!-- Paste the exact prompt you used. -->
+Please without reading repo files - func ValidateEmail(s string) bool  generate a full table-driven test suite for that signature. Dont
+read any of repo files, that function is in validate.go but dont read it, create blind tests in validate_ai_test.go
 
 ## Edge cases the AI found that you had missed
 
-<!-- List them, and say whether they exposed a real bug. -->
+None, only two FP , commented them out 
 
 ## Edge cases you had that the AI missed
 
-<!-- List them, and say why you think the AI didn't think of them. -->
+None 
 
 ## Cases where the AI's expected output was wrong
 
-<!-- AI can be confidently wrong about what the "correct" output should
-     be — did that happen here? -->
+valid/all_safe_symbols
+valid/local_percent
 
 ## What you'd change about your own test-writing process after this
 
-<!-- A few sentences of reflection. -->
+Way overcomplicated for testing a  ValidateEmail , LLM was quite focused on trying to break it, so it did everything it could on this specific task, therefore - overcommited in my opinion. 
